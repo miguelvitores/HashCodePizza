@@ -16,17 +16,42 @@ public class PizzaOrder {
 
 
     public void generateOrder(){
-        int index = numDifferentTypes - 1;
-        int currentSlices = 0;
-        while( index!=-1 ){
-
-            int possibleSlices = currentSlices + slicesInEachType[index];
+        int[] i;
+        i = findBestFirstPair();
+        typesOfPizzaOrder.add(0, i[0]);
+        typesOfPizzaOrder.add(0, i[1]);
+        int iy = i[1]-1;
+        int currentSlices = slicesInEachType[i[0]] + slicesInEachType[i[1]];
+        while( iy!=-1 ){
+            int possibleSlices = currentSlices + slicesInEachType[iy];
             if(possibleSlices <= maxSlicesToOrder){
                 currentSlices = possibleSlices;
-                typesOfPizzaOrder.add(0, index);
+                typesOfPizzaOrder.add(0, iy);
             }
-            index--;
+            iy--;
         }
+    }
+
+    private int[] findBestFirstPair(){
+        int[] bestPair = {0, 1};
+        int max = 0;
+        int ix, iy;
+        ix = numDifferentTypes - 1;
+        while(ix > numDifferentTypes/2){
+            iy = ix-1;
+            while(iy > -1){
+                int sum = slicesInEachType[ix] + slicesInEachType[iy];
+                if(sum <= maxSlicesToOrder && sum > max){
+                    bestPair[0] = ix;
+                    bestPair[1] = iy;
+                    max = sum;
+                    iy = 0;
+                }
+                iy--;
+            }
+            ix--;
+        }
+        return bestPair;
     }
 
     public int[] getSlicesInEachType() {
