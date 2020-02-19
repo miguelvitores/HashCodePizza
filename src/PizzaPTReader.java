@@ -4,13 +4,14 @@ import java.io.IOException;
 
 public class PizzaPTReader {
 
+    private static final String EXT = ".in";
     private String path;
     private String plainText="";
     private PizzaOrder pizzaOrder;
 
     public PizzaPTReader(String path){
         if(path != null){
-            this.path = path+".in";
+            this.path = path+EXT;
         }
     }
 

@@ -6,6 +6,7 @@ public class PizzaOrder {
     private final int numDifferentTypes;
     private final int[] slicesInEachType;
     private ArrayList<Integer> typesOfPizzaOrder;
+    private int slicesToOrder;
 
     public PizzaOrder(int maxSlicesToOrder, int[] slicesInEachType){
         this.maxSlicesToOrder = maxSlicesToOrder;
@@ -30,6 +31,7 @@ public class PizzaOrder {
             }
             iy--;
         }
+        slicesToOrder = currentSlices;
     }
 
     private int[] findBestFirstPair(){
@@ -69,6 +71,14 @@ public class PizzaOrder {
 
     public ArrayList<Integer> getTypesOfPizzaOrder() {
         return typesOfPizzaOrder;
+    }
+
+    public int getSlicesToOrder() {
+        return slicesToOrder;
+    }
+
+    public int getMaxSlicesToOrder() {
+        return maxSlicesToOrder;
     }
 
     public String typesOfPizzaOrderToString() {

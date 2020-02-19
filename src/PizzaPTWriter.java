@@ -2,12 +2,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class PizzaPTWriter {
+
+    private static final String EXT = ".out";
     private String path;
     private PizzaOrder pizzaOrder;
 
     public PizzaPTWriter(String path, PizzaOrder pizzaOrder){
         if(path != null){
-            this.path = path+".out";
+            this.path = path+EXT;
             this.pizzaOrder = pizzaOrder;
         }
     }
