@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class PizzaOrder {
 
@@ -17,43 +18,54 @@ public class PizzaOrder {
 
 
     public void generateOrder(){
-        int[] i;
-        i = findBestFirstPair();
-        typesOfPizzaOrder.add(0, i[0]);
-        typesOfPizzaOrder.add(0, i[1]);
-        int iy = i[1]-1;
-        int currentSlices = slicesInEachType[i[0]] + slicesInEachType[i[1]];
-        while( iy!=-1 ){
-            int possibleSlices = currentSlices + slicesInEachType[iy];
-            if(possibleSlices <= maxSlicesToOrder){
-                currentSlices = possibleSlices;
-                typesOfPizzaOrder.add(0, iy);
+        int iRoot = slicesInEachType.length - 1;
+        PizzaCombination pizzaCombination, bestPizzaCombination = new PizzaCombination();
+        do{
+            pizzaCombination = findBestCombination(iRoot);
+            if(pizzaCombination.getSlices() > bestPizzaCombination.getSlices()){
+                bestPizzaCombination = pizzaCombination;
             }
-            iy--;
-        }
-        slicesToOrder = currentSlices;
+            iRoot--;
+        } while(iRoot > slicesInEachType.length/2 || bestPizzaCombination.getSlices() == maxSlicesToOrder);
+        typesOfPizzaOrder.addAll(bestPizzaCombination.getPizzaTypes());
+        slicesToOrder = bestPizzaCombination.getSlices();
     }
 
-    private int[] findBestFirstPair(){
-        int[] bestPair = {0, 1};
-        int max = 0;
-        int ix, iy;
-        ix = numDifferentTypes - 1;
-        while(ix > numDifferentTypes/2){
-            iy = ix-1;
-            while(iy > -1){
-                int sum = slicesInEachType[ix] + slicesInEachType[iy];
-                if(sum <= maxSlicesToOrder && sum > max){
-                    bestPair[0] = ix;
-                    bestPair[1] = iy;
-                    max = sum;
-                    iy = 0;
-                }
-                iy--;
-            }
-            ix--;
+    private PizzaCombination findBestCombination(int iRoot){
+        PizzaCombination comb = new PizzaCombination();
+        int currentSlices = slicesInEachType[iRoot];
+        int maxSlices = 0;
+        while( index >= 0 ) {
+            findChildRecursive(iRoot - 1, currentSlices, maxSlices, comb);
         }
-        return bestPair;
+        return comb;
+    }
+
+    private int findChildRecursive(int index, int currentSlices, int maxSlices, PizzaCombination comb){
+
+            int possibleSlices = currentSlices + slicesInEachType[index];
+            if(possibleSlices <= maxSlicesToOrder){
+                currentSlices = possibleSlices;
+                combAux.add(0, index);
+                if(currentSlices > maxSlices){
+                    comb.clear();
+                    maxSlices = currentSlices;
+                    comb.addAll(combAux);
+                    combAux.clear();
+                }
+                findChildRecursive(index-1, currentSlices, maxSlices, combAux);
+            }
+            index--;
+    }
+
+    private int getSlicesFromCombination(List<Integer> comb){
+        int combSlices = 0;
+        for(int p : comb){
+            combSlices += slicesInEachType[p];
+        }
+        if(combSlices > maxSlicesToOrder)
+            return -1;
+        return combSlices;
     }
 
     public int[] getSlicesInEachType() {
