@@ -11,7 +11,8 @@ public class LibraryLife {
         booksSentInOrder = new ArrayList<>();
     }
 
-    public LibraryLife(List<Integer> booksSentInOrder) {
-        this.booksSentInOrder = booksSentInOrder;
+    public LibraryLife(Library lib) {
+        this.lib = lib;
+        booksSentInOrder = new ArrayList<>();
     }
 }

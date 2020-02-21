@@ -3,7 +3,6 @@ package booksExample;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class LibraryOrder {
     private LibraryPTReader libReader;
@@ -19,20 +18,24 @@ public class LibraryOrder {
     public void generateOrder(){
 
         int currentDaysLeft = libReader.numDays;
+        boolean deadline = false;
 
-        for(Library lib : libReader.libraries){
-            LibraryLife ll = new LibraryLife();
+        for(int i = 0; i < LibraryPTReader.libraries.length && !deadline; i++){
+            Library lib = LibraryPTReader.libraries[i];
+            LibraryLife ll = new LibraryLife(lib);
 
-            HashMap<Integer, Integer> books = lib.getBooks();
-            currentDaysLeft -= lib.getDaysSignUp() - 1;
-            int count = 0;
+            HashMap<Integer, Integer> books = lib.books;
+            currentDaysLeft -= lib.getDaysSignUp();
+            int booksToday = 0, llDaysLeft = currentDaysLeft;
             for (HashMap.Entry<Integer, Integer> b : books.entrySet()) {
-                count++;
-                if(count == lib.getBooksPerDay()){
-                    currentDaysLeft--;
-                    ll.booksSentInOrder.add(b.getKey());
+                booksToday++;
+                ll.booksSentInOrder.add(b.getKey());
+                if(booksToday == lib.getBooksPerDay()){
+                    llDaysLeft--;
+                    booksToday = 0;
                 }
-                if(currentDaysLeft == -1){
+                if(llDaysLeft == 0){
+                    deadline = true;
                     break;
                 }
             }

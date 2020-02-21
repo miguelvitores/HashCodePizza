@@ -44,14 +44,6 @@ public class Library {
         return numBooks;
     }
 
-    public HashMap<Integer, Integer> getBooks() {
-        return books;
-    }
-
-    public void setBooks(HashMap books) {
-        this.books = books;
-    }
-
     public void setNumBooks(int numBooks) {
         this.numBooks = numBooks;
     }

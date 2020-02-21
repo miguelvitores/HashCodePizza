@@ -20,7 +20,7 @@ public class LibraryPTReader {
 
     public LibraryPTReader(String path){
         if(path != null){
-            this.path = path+".txt";
+            this.path = path;
         }
     }
 
