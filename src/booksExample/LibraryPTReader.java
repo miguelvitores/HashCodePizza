@@ -12,9 +12,9 @@ public class LibraryPTReader {
 
     private String path;
     private String plainText="";
-    public int numBooks;
-    public int numLibs;
-    public int numDays;
+    public static int numBooks;
+    public static int numLibs;
+    public static int numDays;
     public static HashMap<Integer, Integer> scores;
     public static Library[] libraries;
 

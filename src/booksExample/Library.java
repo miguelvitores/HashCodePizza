@@ -22,10 +22,9 @@ public class Library {
         this.numBooks = numBooks;
         this.daysSignUp = daysSignUp;
         this.booksPerDay = booksPerDay;
-        orderByScores();
     }
 
-    private void orderByScores(){
+    public void orderBooksByScores(){
         books = books.entrySet().
                 stream().
                 sorted((Map.Entry.<Integer, Integer>comparingByValue().reversed()))

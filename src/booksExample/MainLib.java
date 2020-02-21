@@ -19,7 +19,7 @@ public class MainLib {
                 String path = f.getName();
                 LibraryPTReader libReader = new LibraryPTReader(dirIn+path);
                 libReader.read();
-                LibraryOrder libOrder = new LibraryOrder(libReader);
+                LibraryOrder libOrder = new LibraryOrder();
                 libOrder.generateOrder();
                 LibraryPTWriter libWriter = new LibraryPTWriter(dirOut, path, libOrder.getLibLife());
                 libWriter.write();
