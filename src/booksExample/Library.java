@@ -12,6 +12,8 @@ public class Library {
     private int booksPerDay;
     public HashMap<Integer, Integer> books;
 
+    public static int maxBooksPerDays;
+
     public Library(){
         books = new HashMap<>();
     }
@@ -22,6 +24,7 @@ public class Library {
         this.numBooks = numBooks;
         this.daysSignUp = daysSignUp;
         this.booksPerDay = booksPerDay;
+        maxBooksPerDays = Math.max(booksPerDay, maxBooksPerDays);
     }
 
     public void orderBooksByScores(){

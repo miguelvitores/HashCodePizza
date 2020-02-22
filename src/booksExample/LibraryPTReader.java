@@ -42,6 +42,7 @@ public class LibraryPTReader {
 
             orderScores();
 
+            Library.maxBooksPerDays = 0;
             libraries = new Library[numLibs];
             for(int i=0; i<numLibs;i++){
                 line = br.readLine();
@@ -69,6 +70,20 @@ public class LibraryPTReader {
                 stream().
                 sorted((Map.Entry.<Integer, Integer>comparingByValue().reversed()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(e1, e2) -> e1, LinkedHashMap::new));
+    }
+
+    public static double calculateBooksPerDayVariance() {
+        double sum = 0.0, standardDeviation = 0.0;
+        int length = libraries.length;
+        for(Library l : libraries) {
+            sum += l.getBooksPerDay();
+        }
+
+        double mean = sum/length;
+        for(Library l : libraries) {
+            standardDeviation += Math.pow(l.getBooksPerDay() - mean, 2);
+        }
+        return standardDeviation/length;
     }
 
     public String getPlainText() {

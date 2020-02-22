@@ -7,11 +7,22 @@ public class LibraryOrder {
     private List <LibraryLife> libraryLives;
     private int[] libIdsOrdered;
     private int numLibsSU;
+    private static final double gaussianA = 1;
+    private double gaussianB;
+    private double gaussianC;
 
 
     public LibraryOrder(){
         libIdsOrdered = new int[LibraryPTReader.libraries.length];
         libraryLives = new ArrayList<>();
+
+        if(Library.maxBooksPerDays >= LibraryPTReader.numDays / 2.0 ){
+            gaussianB = LibraryPTReader.numDays / 2.0;
+        }else{
+            gaussianB = Library.maxBooksPerDays;
+        }
+
+        gaussianC = LibraryPTReader.calculateBooksPerDayVariance();
     }
 
     public void generateOrder(){
@@ -29,9 +40,8 @@ public class LibraryOrder {
             currentDaysLeft -= lib.getDaysSignUp();
             int booksToday = 0, llDaysLeft = currentDaysLeft;
             for (HashMap.Entry<Integer, Integer> b : lib.books.entrySet()) {
-                booksToday++;
-
                 if( ll.addBook(lib.id, b.getKey()) ){
+                    booksToday++;
 
                     if(booksToday == lib.getBooksPerDay()){
                         llDaysLeft--;
@@ -57,7 +67,12 @@ public class LibraryOrder {
             double timeHeur = (double)l.getDaysSignUp() / (double)LibraryPTReader.numDays;
             double booksHeur = (double)l.getNumBooks() / (double)LibraryPTReader.numBooks;
 
-            double heur = (timeHeur + booksHeur) * l.getBooksPerDay();
+            double x = l.getBooksPerDay();
+            if(gaussianC == 0.0) gaussianC = 0.1;
+            double booksPerDayGaussHeur =
+                    gaussianA * Math.pow( Math.E, -( Math.pow(x - gaussianB, 2) / (2 * Math.pow(gaussianC, 2)) ) );
+
+            double heur = (timeHeur + booksHeur + booksPerDayGaussHeur) / 3.0;
 
             librariesHeuristics.put(i, heur);
         }
