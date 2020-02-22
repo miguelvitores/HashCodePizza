@@ -86,6 +86,14 @@ public class LibraryPTReader {
         return standardDeviation/length;
     }
 
+    public static double getMeanAllBooksScore(){
+        int score = 0;
+        for (HashMap.Entry<Integer, Integer> s : scores.entrySet()) {
+            score += s.getValue();
+        }
+        return (double)score / numBooks;
+    }
+
     public String getPlainText() {
         return plainText;
     }

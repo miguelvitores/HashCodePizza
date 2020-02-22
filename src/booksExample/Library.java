@@ -34,6 +34,14 @@ public class Library {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(e1, e2) -> e1, LinkedHashMap::new));
     }
 
+    public double getMeanBooksScore(){
+        int score = 0;
+        for (HashMap.Entry<Integer, Integer> b : books.entrySet()) {
+            score += b.getValue();
+        }
+        return (double)score / numBooks;
+    }
+
     public int getBooksPerDay() {
         return booksPerDay;
     }

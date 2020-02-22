@@ -66,13 +66,14 @@ public class LibraryOrder {
 
             double timeHeur = (double)l.getDaysSignUp() / (double)LibraryPTReader.numDays;
             double booksHeur = (double)l.getNumBooks() / (double)LibraryPTReader.numBooks;
+            double meanScoreHeur = l.getMeanBooksScore() / LibraryPTReader.getMeanAllBooksScore();
 
             double x = l.getBooksPerDay();
             if(gaussianC == 0.0) gaussianC = 0.1;
             double booksPerDayGaussHeur =
                     gaussianA * Math.pow( Math.E, -( Math.pow(x - gaussianB, 2) / (2 * Math.pow(gaussianC, 2)) ) );
 
-            double heur = (timeHeur + booksHeur + booksPerDayGaussHeur) / 3.0;
+            double heur = (2*timeHeur + 2*booksHeur + 2*meanScoreHeur + booksPerDayGaussHeur) / 7.0;
 
             librariesHeuristics.put(i, heur);
         }
